@@ -28,4 +28,9 @@ class Ability extends Model
     {
         return $this->belongsToMany('App\XpType', 'ability_xptypes', 'ability_id', 'xp_type');
     }
+
+    public function characters()
+    {
+        return $this->belongsToMany('App\Character', 'ability_characters', 'ability_id', 'character_id');
+    }
 }

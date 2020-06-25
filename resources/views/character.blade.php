@@ -21,6 +21,19 @@
 
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header">Evner</div>
+
+                <div class="card-body">
+
+                    @foreach ($character->abilities as $ability)
+                        {{$ability->name}}
+                    @endforeach
+                    <br>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
