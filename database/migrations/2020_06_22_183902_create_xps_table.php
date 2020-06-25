@@ -20,11 +20,11 @@ class CreateXpsTable extends Migration
             $table->string('xp_type');
             $table->string('teacher');
             $table->string('file_path');
-            $table->enum('approved', ['not consitered', 'approved', 'declined']);
+            $table->enum('approved', ['not consitered', 'approved', 'declined'])->default('not consitered');
             $table->dateTime('approved_time');
-            $table->boolean('used');
-            $table->date('used_date');
-            $table->integer('ability_character');
+            $table->boolean('used')->default(false);
+            $table->date('used_date')->nullable();
+            $table->integer('ability_character')->nullable();
             $table->integer('character');
 
         });
