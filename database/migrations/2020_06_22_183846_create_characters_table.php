@@ -22,6 +22,7 @@ class CreateCharactersTable extends Migration
             $table->string('religion')->nullable();
             $table->string('culture')->nullable();
             $table->string('race')->nullable();
+            $table->string('category');
         });
     }
 

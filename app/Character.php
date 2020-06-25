@@ -18,19 +18,24 @@ class Character extends Model
 
     public function xps()
     {
-        return $this->hasMany('"App\Xp');
+        return $this->hasMany('App\Xp');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
     }
 
     public function getXpsNotUsedNotDeclined()
     {
-        $xps = $this->xps();
+        $xps = $this->xps;
         return $xps->filter(function($item)
         {
             return !($item->approved === 'declined');
         })
         ->filter(function($item)
         {
-            return $item->used;
+            return !$item->used;
         });
     }
 

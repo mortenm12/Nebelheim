@@ -14,4 +14,9 @@ class Category extends Model
     {
         return $this->belongsToMany('App\Ability', 'ability_categories', 'category', 'ability_id');
     }
+
+    public function characters()
+    {
+        return $this->hasMany('App\Charater');
+    }
 }

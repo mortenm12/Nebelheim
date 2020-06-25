@@ -9,6 +9,8 @@
 
                 <div class="card-body">
 
+                    {{$character->category}}
+                    <br>
                     {{$character->name}}
                     <br>
                     {{$character->race}}
@@ -21,6 +23,24 @@
 
                 </div>
             </div>
+
+            <br>
+
+            <div class="card">
+                <div class="card-header">XP</div>
+
+                <div class="card-body">
+
+                    @foreach ($character->getXpByType() as $xp_type => $number)
+                        {{$xp_type}}: {{$number}}
+                        <br>
+                    @endforeach
+                    <br>
+
+                </div>
+            </div>
+
+            <br>
 
             <div class="card">
                 <div class="card-header">Evner</div>
