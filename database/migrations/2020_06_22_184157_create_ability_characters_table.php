@@ -18,7 +18,6 @@ class CreateAbilityCharactersTable extends Migration
             $table->id();
             $table->integer('ability_id');
             $table->integer('character_id');
-
         });
     }
 

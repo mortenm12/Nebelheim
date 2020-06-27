@@ -22,7 +22,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/c/{id}', 'CharacterController@index');
+Route::get('/character/{id}', 'HomeController@getCharacter');
 
-Route::get('/c', 'HomeController@new');
-Route::post('/c/new', 'HomeController@newcharacter');
+Route::get('/character', 'HomeController@newCharacter');
+Route::post('/character/new', 'HomeController@postCharacter');
+
+route::get('/character/{id}/ability', 'HomeController@findAbility');
+
+route::get('/ability/{id}', 'HomeController@ability');

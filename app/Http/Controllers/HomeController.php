@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Ability;
+use App\Category;
 use App\Character;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Ui\Presets\React;
 
 class HomeController extends Controller
 {
@@ -32,14 +35,26 @@ class HomeController extends Controller
         ]);
     }
 
-    public function new()
+    public function getCharacter($id)
     {
-        return view('newcharacter');
+        $character = Character::findOrFail($id);
+        return view('character', [
+            'character' => $character
+        ]);
     }
 
-    public function newcharacter(Request $request)
+    public function newCharacter()
+    {
+        $categories = Category::all();
+        return view('newcharacter', [
+            'categories' => $categories
+        ]);
+    }
+
+    public function postCharacter(Request $request)
     {
         $character = new Character();
+        $character->category = $request->input('category');
         $character->name = $request->input('name');
         $character->race = $request->input('race');
         $character->religion = $request->input('religion');
@@ -48,5 +63,25 @@ class HomeController extends Controller
         $character->user_id = Auth::user()->id;
         $character->save();
         return $this->index();
+    }
+
+    public function findAbility($id)
+    {
+        $character = Character::findOrFail($id);
+        $abilities = Ability::all();
+        $categories = Category::all();
+        return view('findAbility', [
+            'character' => $character,
+            'abilities' => $abilities,
+            'categories' => $categories
+        ]);
+    }
+
+    public function ability($id)
+    {
+        $ability = Ability::findOrFail($id);
+        return view('ability', [
+            'ability' => $ability
+        ]);
     }
 }

@@ -13,7 +13,7 @@ class Character extends Model
 
     public function abilities()
     {
-        return $this->belongsToMany('App\Ability', 'ability_characters', 'character_id', 'ability_id');
+        return $this->belongsToMany('App\Ability', 'ability_characters', 'character_id', 'ability_id')->withTimestamps();
     }
 
     public function xps()

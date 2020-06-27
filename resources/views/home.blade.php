@@ -10,12 +10,12 @@
                 <div class="card-body">
 
                     @foreach ($characters as $character)
-                        <a href='/c/{{$character->id}}'>{{$character->name}}</a>
+                        <a href='/character/{{$character->id}}'>{{$character->name}}</a>
                         <br>
                     @endforeach
                     <br>
 
-                    <a href='/c/' class='btn btn-primary'>
+                    <a href='/character/' class='btn btn-primary'>
                         Ny karakter
                     </a>
 
