@@ -1,5 +1,4 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/
-    - /bin/cp -R * $DEPLOYPATH
+    - php artisan migrate
