@@ -1,4 +1,11 @@
 ---
 deployment:
   tasks:
+    - cd ../../
+    - rm -rf .git/
+    - cd repositories/
+    - cp -RT Nebelheim ../
+    - cd Nebelheim/
+    - cp -RT public ../../public_html/
+    - cd ../../
     - php artisan migrate
