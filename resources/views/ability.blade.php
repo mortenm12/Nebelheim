@@ -43,7 +43,7 @@
                     <div>
                         <span class="font-weight-bold">Krav til evner: </span>
                         <span>
-                            @if ($ability->requerements === null)
+                            @if ($ability->requerements->count() == 0)
                                 Ingen
                             @else
                                 @foreach ($ability->requerements as $req)
@@ -60,7 +60,7 @@
                     <div>
                         <span class="font-weight-bold">Favorit evne for: </span>
                         <span>
-                            @if ($ability->favorit_category === null)
+                            @if ($ability->favorit_category->count() == 0)
                                 Ingen
                             @else
                                 @foreach ($ability->favorit_category as $req)
