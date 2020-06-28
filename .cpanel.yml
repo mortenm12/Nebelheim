@@ -8,4 +8,4 @@ deployment:
     - cd Nebelheim/
     - cp -RT public ../../public_html/
     - cd ../../
-    - php artisan migrate
+    - php artisan migrate:fresh --seed
