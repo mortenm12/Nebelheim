@@ -6,6 +6,8 @@ use App\Ability;
 use App\Category;
 use App\Character;
 use App\User;
+use App\Xp;
+use App\XpType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ui\Presets\React;
@@ -83,5 +85,40 @@ class HomeController extends Controller
         return view('ability', [
             'ability' => $ability
         ]);
+    }
+
+    public function xp($id, $error='')
+    {
+        $xpTypes = XpType::all();
+        $character = Character::findOrFail($id);
+        $month = date('m');
+        $year = date('Y');
+        return view('xp', [
+            'character' => $character,
+            'xpTypes' => $xpTypes,
+            'month' => $month,
+            'year' => $year,
+            'error' => $error
+        ]);
+    }
+
+    public function postXp(Request $request)
+    {
+        $id = $request->input('id');
+        $count = Xp::where('base_month', $request->input('year') + $request->input('month'))->where('character_id', $id)->count();
+        if($count == 0 || $request->input('month') == 'Døgn')
+        {
+            $xp = new Xp();
+            $xp->character_id = $id;
+            $xp->xp_type = $request->input('xp_type');
+            $xp->teacher = $request->input('teacher');
+            $xp->base_month = $request->input('year') + $request->input('month');
+            $xp->save();
+            return $this->getCharacter($id);
+        }
+        else
+        {
+            return $this->xp($id, 'Du har allerede et XP fra det år og den måned.');
+        }
     }
 }

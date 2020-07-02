@@ -44,7 +44,7 @@
                 <div class="card">
                     <div class="card-header">
                         XP
-                        <a href="xp" class='btn btn-primary float-right btn-sm'>Upload XP</a>
+                    <a href="/character/{{$character->id}}/xp" class='btn btn-primary float-right btn-sm'>Upload XP</a>
                     </div>
 
                     <div class="card-body">

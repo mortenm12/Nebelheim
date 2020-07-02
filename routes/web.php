@@ -30,3 +30,6 @@ Route::post('/character/new', 'HomeController@postCharacter');
 route::get('/character/{id}/ability', 'HomeController@findAbility');
 
 route::get('/ability/{id}', 'HomeController@ability');
+
+route::get('/character/{id}/xp', 'HomeController@xp');
+Route::post('/character/{id}/xp', 'HomeController@postXp');
