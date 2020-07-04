@@ -52,14 +52,6 @@ class Ability extends Model
 
     public function useFullXp(Character $character)
     {
-        $favoritAbility = 0;
-        $niceCloth = 1;
-
-        if($this->favorit_category->contains($character->category))
-        {
-            $favoritAbility = 2;
-        }
-
         $usefullXp = 0;
 
         foreach($character->getXpByType() as $xpByType=>$number)
@@ -69,7 +61,20 @@ class Ability extends Model
                 $usefullXp = $usefullXp + $number;
             }
         }
-        return $usefullXp + $niceCloth + $favoritAbility;
+        return $usefullXp;
+    }
+
+    public function rabat($character)
+    {
+        $favoritAbility = 0;
+        $niceCloth = 1;
+
+        if($this->favorit_category->contains($character->category))
+        {
+            $favoritAbility = 2;
+        }
+
+        return $niceCloth + $favoritAbility;
     }
 
     public function canBeBougt(Character $character, $extraXp = 0)
@@ -84,6 +89,6 @@ class Ability extends Model
             return false;
         }
 
-        return ($this->useFullXp($character) + $extraXp) >= $this->cost;
+        return ($this->useFullXp($character) + $extraXp) >= $this->cost - $this->rabat($character);
     }
 }
