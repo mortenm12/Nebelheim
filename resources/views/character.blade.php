@@ -89,6 +89,7 @@
                 </div>
             </span>
         </div>
+        <a href="/home" class='btn btn-primary col-md-4 float-right mt-4'>Tilbage</a>
     </div>
 </div>
 @endsection

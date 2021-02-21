@@ -90,8 +90,12 @@
                           </div>
                         </div>
                       </div>
-
                 </div>
+            </div>
+        </div>
+        <div class='col-md-8'>
+            <div class='row justify-content-center'>
+                <a href="/character/{{$character->id}}" class='btn btn-primary col-md-4 mt-4'>Tilbage</a>
             </div>
         </div>
     </div>

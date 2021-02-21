@@ -45,9 +45,9 @@
                         <button tupe='submit' class='btn btn-primary btn-block'> Gem </button>
 
                     </form>
-
                 </div>
             </div>
+            <a href="/home" class='btn btn-primary col-md-12 mt-4'>Tilbage</a>
         </div>
     </div>
 </div>
