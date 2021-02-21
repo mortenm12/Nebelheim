@@ -105,14 +105,43 @@ class HomeController extends Controller
     public function postXp(Request $request)
     {
         $id = $request->input('id');
-        $count = Xp::where('base_month', $request->input('year') + $request->input('month'))->where('character_id', $id)->count();
-        if($count == 0 || $request->input('month') == 'Døgn')
+
+        if($request->input('month') != 'Døgn')
+        {
+            $count = Xp::where('base_month', $request->input('year') + $request->input('month'))->where('character_id', $id)->count();
+        }
+        else{
+            $count = 0;
+        }
+
+        $startDate = strtotime(Character::findOrFail($id)->start_time);
+
+        if($request->input('month') == 'Døgn' && $request->input('year') < date('Y', $startDate)){
+            return $this->xp($id, 'Du kan ikke indberette XP fra før din start dato.');
+        }
+        else if( ($request->input('year') < date('Y', $startDate)))
+        {
+            return $this->xp($id, 'Du kan ikke indberette XP fra før din start dato.');
+        }
+        else if( ($request->input('year') == date('Y', $startDate) && $request->input('month') != 'Døgn' && $request->input('month') < date('n', $startDate)))
+        {
+            return $this->xp($id, 'Du kan ikke indberette XP fra før din start dato.');
+        }
+        else if( $request->input('year') > date('Y'))
+        {
+            return $this->xp($id, 'Du kan ikke indberette XP fra fremtiden.');
+        }
+        else if( $request->input('year') == date('Y') && $request->input('month') != 'Døgn' && $request->input('month') > date('n'))
+        {
+            return $this->xp($id, 'Du kan ikke indberette XP fra fremtiden.');
+        }
+        else if($count == 0)
         {
             $xp = new Xp();
             $xp->character_id = $id;
             $xp->xp_type = $request->input('xp_type');
             $xp->teacher = $request->input('teacher');
-            $xp->base_month = $request->input('year') + $request->input('month');
+            $xp->base_month = $request->input('year') . '/' . $request->input('month');
             $xp->save();
             return $this->getCharacter($id);
         }
