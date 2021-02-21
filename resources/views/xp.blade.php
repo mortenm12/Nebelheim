@@ -37,9 +37,9 @@
                         <div class="container mb-3">
                             År
                             <select name="year" class="form-control">
+                                <option value="{{$year-2}}">{{$year-2}}</option>
                                 <option value="{{$year-1}}">{{$year-1}}</option>
                                 <option value="{{$year}}" selected>{{$year}}</option>
-                                <option value="{{$year+1}}">{{$year+1}}</option>
                             </select>
                             <p class="text-danger">{{$error}}</p>
                         </div>
