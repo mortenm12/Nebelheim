@@ -1,7 +1,8 @@
 function loadAbility(abilityName, xpList, cost)
 {
     document.getElementById('abilityName').innerHTML = abilityName;
-    document.getElementById('cost').innerHTML = cost;
+    document.getElementById('cost').value = cost;
+    document.getElementById('total').innerHTML = cost;
 
     xps = document.getElementById('xps').children;
 
@@ -22,16 +23,39 @@ function loadAbility(abilityName, xpList, cost)
         document.getElementById(xpList[i]['xp_type']).classList.remove('d-none');
     }
 
+    reset();
+
 }
 
-function updateBack(xpType, xpList)
+function reset()
+{
+    xps = document.getElementById('xps').children;
+
+    for(i in xps)
+    {
+        if(xps[i].id != 'header' && xps[i].id != 'footer')
+        {
+            if(xps[i].classList != undefined)
+            {
+                document.getElementById(xps[i].id + 'brugt').value = 0;
+                document.getElementById(xps[i].id + 'tilbage').innerHTML = document.getElementById(xps[i].id + 'brugt').max;
+            }
+        }
+    }
+    
+    document.getElementById('buy').classList.add('btn-secondary');
+    document.getElementById('buy').classList.add('disabled');
+    document.getElementById('buy').classList.remove('btn-primary');
+}
+
+function updateBack(xpType)
 {
     brugt = document.getElementById(xpType + 'brugt').value;
     max = document.getElementById(xpType + 'brugt').max;
     document.getElementById(xpType + 'tilbage').innerHTML = max - brugt;
 
     xps = document.getElementById('xps').children;
-    total = 0;
+    total = parseInt(document.getElementById('cost').value);
 
     for(i in xps)
     {
@@ -41,12 +65,31 @@ function updateBack(xpType, xpList)
             {
                 if(!xps[i].classList.contains('d-none'))
                 {
-                    total += parseInt(document.getElementById(xps[i].id+'brugt').value);
+                    total -= parseInt(document.getElementById(xps[i].id + 'brugt').value);
                 }
             }
         }
     }
 
-    document.getElementById('total').innerHTML = total;
+    if(total < 0) {
+        document.getElementById(xpType + 'brugt').value -= parseInt(1);
+        document.getElementById(xpType + 'tilbage').innerHTML = max - brugt +1;
+    }
+
+    else {
+        document.getElementById('total').innerHTML = total;
+        if(total == 0) {
+            document.getElementById('buy').classList.remove('btn-secondary');
+            document.getElementById('buy').classList.remove('disabled');
+            document.getElementById('buy').classList.add('btn-primary');
+        }
+        else {
+            document.getElementById('buy').classList.add('btn-secondary');
+            document.getElementById('buy').classList.add('disabled');
+            document.getElementById('buy').classList.remove('btn-primary');
+        }
+    }
+
+
 }
 

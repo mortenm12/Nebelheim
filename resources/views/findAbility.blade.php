@@ -78,13 +78,14 @@
                                 <div class="row" id="footer">
                                     <input type="hidden" id='cost'>
                                     <div class="col-md-4 col-5"></div>
-                                    <div class="col-md-2 col-4 text-right">Pris</div>
+                                    <div class="col-md-2 col-4 text-right">Pris: </div>
                                     <div class="col-md-2 col-3" id="total"></div>
                                 </div>
                             </div>
 
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-secondary disabled" id='buy' >Køb</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                             </div>
 
                           </div>
