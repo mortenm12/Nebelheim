@@ -10,6 +10,7 @@ use App\Xp;
 use App\XpType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Ui\Presets\React;
 
 class HomeController extends Controller
@@ -67,7 +68,7 @@ class HomeController extends Controller
         return $this->index();
     }
 
-    public function findAbility($id)
+    public function findAbility($id, $error='')
     {
         $character = Character::findOrFail($id);
         $abilities = Ability::all();
@@ -108,15 +109,17 @@ class HomeController extends Controller
 
         if($request->input('month') != 'Døgn')
         {
-            $count = Xp::where('base_month', $request->input('year') + $request->input('month'))->where('character_id', $id)->count();
+            $count = Xp::where('base_month', $request->input('year') . '/' . $request->input('month'))->where('character_id', $id)->count();
         }
-        else{
+        else
+        {
             $count = 0;
         }
 
         $startDate = strtotime(Character::findOrFail($id)->start_time);
 
-        if($request->input('month') == 'Døgn' && $request->input('year') < date('Y', $startDate)){
+        if($request->input('month') == 'Døgn' && $request->input('year') < date('Y', $startDate))
+        {
             return $this->xp($id, 'Du kan ikke indberette XP fra før din start dato.');
         }
         else if( ($request->input('year') < date('Y', $startDate)))
@@ -148,6 +151,53 @@ class HomeController extends Controller
         else
         {
             return $this->xp($id, 'Du har allerede et XP fra det år og den måned.');
+        }
+    }
+
+    public function postAbility(Request $request, $id)
+    {    
+        DB::beginTransaction();    
+        try{
+
+            $characterId = $id;
+            $ability = Ability::findOrFail($request->input('abilityId'));
+            
+            $character = Character::findOrFail($characterId);
+            $cost = $ability->cost - $ability->rabat($character);
+            if($ability->canBeBougt($character))
+            {
+                $ability->characters()->attach($character);
+
+                foreach($ability->xp_types as $xpTypes )
+                {
+                    $used = $request->input(str_replace(' ', '_',$xpTypes->xp_type));
+
+                    $cost -= $used;
+                    $xps = $character->getXpsNotUsedNotDeclined()->whereIn('xp_type', [$xpTypes->xp_type]);
+
+                    for($i = 0; $i < $used; $i++)
+                    {
+                        $xp = $xps->first();
+
+                        $xp->used = true;
+                        $xp->ability_character = 1;
+                        $xp->used_date = date("Y-m-d");
+                        $xp->save();
+                        $xps = $xps->slice(1);
+                    }
+                }
+                DB::commit();
+                return $this->getCharacter($id);
+            }
+            else
+            {
+                return $this->findAbility($characterId, "Der er noget galt, det ser ud som om du ikke har ret til at købe evnen.");
+            }
+        }
+        catch (Exception $e)
+        {
+            DB::rollBack();
+            throw $e;
         }
     }
 }

@@ -28,6 +28,7 @@ Route::get('/character', 'HomeController@newCharacter');
 Route::post('/character/new', 'HomeController@postCharacter');
 
 route::get('/character/{id}/ability', 'HomeController@findAbility');
+route::post('/character/{id}/newAbility', 'HomeController@postAbility');
 
 route::get('/ability/{id}', 'HomeController@ability');
 

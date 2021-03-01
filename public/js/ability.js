@@ -1,7 +1,8 @@
-function loadAbility(abilityName, xpList, cost)
+function loadAbility(abilityName, abilityId, xpList, cost)
 {
     document.getElementById('abilityName').innerHTML = abilityName;
     document.getElementById('cost').value = cost;
+    document.getElementById('abilityId').value = abilityId;
     document.getElementById('total').innerHTML = cost;
 
     xps = document.getElementById('xps').children;
@@ -42,7 +43,7 @@ function reset()
             }
         }
     }
-    
+
     document.getElementById('buy').classList.add('btn-secondary');
     document.getElementById('buy').classList.add('disabled');
     document.getElementById('buy').classList.remove('btn-primary');
