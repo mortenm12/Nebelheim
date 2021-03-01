@@ -38,7 +38,7 @@
                                 </td>
                                 <td >
                                     @if ($ability->canBeBougt($character))
-                                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-block btn-primary" onclick="loadAbility('{{$ability->name}}', {{$ability->xp_types->toJson()}}, {{$ability->cost - $ability->rabat($character)}});">
+                                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-block btn-primary" onclick="loadAbility('{{$ability->name}}','{{$ability->id}}', {{$ability->xp_types->toJson()}}, {{$ability->cost - $ability->rabat($character)}});">
                                     @else
                                         <button class="btn btn-block btn-secondary disabled">
                                     @endif
@@ -58,34 +58,39 @@
                               <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
 
-                            <div class="modal-body" id="xps">
-                                <div class="row" id="header">
-                                    <div class="col-md-4 col-5"></div>
-                                    <div class="col-md-2 col-4">Tilbage</div>
-                                    <div class="col-md-2 col-3">Brug</div>
-                                </div>
-                                @foreach ($character->getXpByType() as $xpType => $num)
-                                <div id="{{$xpType}}" class=" row">
-                                    <div class="col-md-4 col-5 text-right">
-                                        {{$xpType}}
+                            <form action="/character/{{$character->id}}/newAbility" method='post' autocomplete="off">
+                            @csrf
+                                <div class="modal-body" id="xps">
+                                    <div class="row" id="header">
+                                        <div class="col-md-4 col-5"></div>
+                                        <div class="col-md-2 col-4">Tilbage</div>
+                                        <div class="col-md-2 col-3">Brug</div>
                                     </div>
-                                    <div id="{{$xpType}}tilbage" class="col-md-2 col-4 text-center">
-                                        {{$num}}
+                                    @foreach ($character->getXpByType() as $xpType => $num)
+                                    <div id="{{$xpType}}" class=" row">
+                                        <div class="col-md-4 col-5 text-right">
+                                            {{$xpType}}
+                                        </div>
+                                        <div id="{{$xpType}}tilbage" class="col-md-2 col-4 text-center">
+                                            {{$num}}
+                                        </div>
+                                        <input type="number" min="0" max="{{$num}}" value="0" class="form-control col-md-2 col-3" onchange="updateBack('{{$xpType}}');" id="{{$xpType}}brugt" name="{{$xpType}}">
                                     </div>
-                                    <input type="number" min="0" max="{{$num}}" value="0" class="form-control col-md-2 col-3" onchange="updateBack('{{$xpType}}');" id="{{$xpType}}brugt">
+                                    @endforeach
+                                    <div class="row" id="footer">
+                                        <input type="hidden" id='cost' name='cost'>
+                                        <input type="hidden" id='abilityId' name='abilityId'>
+                                        <div class="col-md-4 col-5"></div>
+                                        <div class="col-md-2 col-4 text-right">Pris: </div>
+                                        <div class="col-md-2 col-3" id="total"></div>
+                                    </div>
                                 </div>
-                                @endforeach
-                                <div class="row" id="footer">
-                                    <input type="hidden" id='cost'>
-                                    <div class="col-md-4 col-5"></div>
-                                    <div class="col-md-2 col-4 text-right">Pris</div>
-                                    <div class="col-md-2 col-3" id="total"></div>
-                                </div>
-                            </div>
 
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-secondary disabled" id='buy' >Køb</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
 
                           </div>
                         </div>
