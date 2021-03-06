@@ -106,52 +106,22 @@ class HomeController extends Controller
     public function postXp(Request $request)
     {
         $id = $request->input('id');
+        $character = Character::findOrFail($id);
+        $xpType = $request->input('xp_type');
+        $teacher = $request->input('teacher');
+        $year = $request->input('year');
+        $month = $request->input('month');
 
-        if($request->input('month') != 'Døgn')
+        $result = $character->attachXp($xpType, $teacher, $year, $month);
+        if($result == null)
         {
-            $count = Xp::where('base_month', $request->input('year') . '/' . $request->input('month'))->where('character_id', $id)->count();
-        }
-        else
-        {
-            $count = 0;
-        }
-
-        $startDate = strtotime(Character::findOrFail($id)->start_time);
-
-        if($request->input('month') == 'Døgn' && $request->input('year') < date('Y', $startDate))
-        {
-            return $this->xp($id, 'Du kan ikke indberette XP fra før din start dato.');
-        }
-        else if( ($request->input('year') < date('Y', $startDate)))
-        {
-            return $this->xp($id, 'Du kan ikke indberette XP fra før din start dato.');
-        }
-        else if( ($request->input('year') == date('Y', $startDate) && $request->input('month') != 'Døgn' && $request->input('month') < date('n', $startDate)))
-        {
-            return $this->xp($id, 'Du kan ikke indberette XP fra før din start dato.');
-        }
-        else if( $request->input('year') > date('Y'))
-        {
-            return $this->xp($id, 'Du kan ikke indberette XP fra fremtiden.');
-        }
-        else if( $request->input('year') == date('Y') && $request->input('month') != 'Døgn' && $request->input('month') > date('n'))
-        {
-            return $this->xp($id, 'Du kan ikke indberette XP fra fremtiden.');
-        }
-        else if($count == 0)
-        {
-            $xp = new Xp();
-            $xp->character_id = $id;
-            $xp->xp_type = $request->input('xp_type');
-            $xp->teacher = $request->input('teacher');
-            $xp->base_month = $request->input('year') . '/' . $request->input('month');
-            $xp->save();
             return $this->getCharacter($id);
         }
         else
         {
-            return $this->xp($id, 'Du har allerede et XP fra det år og den måned.');
+            return $this->xp($id, $result);
         }
+
     }
 
     public function postAbility(Request $request, $id)

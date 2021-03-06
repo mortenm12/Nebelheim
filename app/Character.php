@@ -56,4 +56,54 @@ class Character extends Model
 
         return $result;
     }
+
+    public function attachXp($xpType, $teacher, $year, $month)
+    {
+        
+        if($month != 'Døgn')
+        {
+            $count = Xp::where('base_month', $year . '/' . $month)->where('character_id', $this->id)->count();
+        }
+        else
+        {
+            $count = 0;
+        }
+
+        $startDate = strToTime($this->start_time);
+
+        if($month == 'Døgn' && $year < date('Y', $startDate))
+        {
+            return 'Du kan ikke indberette XP fra før din start dato.';
+        }
+        else if( ($year < date('Y', $startDate)))
+        {
+            return  'Du kan ikke indberette XP fra før din start dato.';
+        }
+        else if( ($year == date('Y', $startDate) && $month != 'Døgn' && $month < date('n', $startDate)))
+        {
+            return 'Du kan ikke indberette XP fra før din start dato.';
+        }
+        else if( $year > date('Y'))
+        {
+            return 'Du kan ikke indberette XP fra fremtiden.';
+        }
+        else if( $year == date('Y') && $month != 'Døgn' && $month > date('n'))
+        {
+            return 'Du kan ikke indberette XP fra fremtiden.';
+        }
+        else if($count == 0)
+        {
+            $xp = new Xp();
+            $xp->character_id = $this->id;
+            $xp->xp_type = $xpType;
+            $xp->teacher = $teacher;
+            $xp->base_month = $year . '/' . $month;
+            $xp->save();
+            return ;
+        }
+        else
+        {
+            return 'Du har allerede et XP fra det år og den måned.';
+        }
+    }
 }
