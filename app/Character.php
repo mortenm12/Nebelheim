@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Character extends Model
 {
@@ -104,6 +105,66 @@ class Character extends Model
         else
         {
             return 'Du har allerede et XP fra det år og den måned.';
+        }
+    }
+
+    public function attachAbility($ability, $xpsUsed)
+    {
+        DB::beginTransaction();    
+        try{
+            $cost = $ability->cost - $ability->rabat($this);
+            if($ability->canBeBougt($this))
+            {
+                $ability->characters()->attach($this);
+                $types = $ability->xp_types->transform(function($item, $key){
+                    return $item->xp_type;
+                });
+                $types->push("Baby XP");
+
+                foreach($types as $xpTypes )
+                {
+                    $used = $xpsUsed[$xpTypes];
+
+                    $cost -= $used;
+                    $xps = $this->getXpsNotUsedNotDeclined()->whereIn('xp_type', [$xpTypes]);
+
+                    for($i = 0; $i < $used; $i++)
+                    {
+                        $xp = $xps->first();
+                        if($xp == null)
+                        {
+                            DB::rollBack();
+                            return  "Der er noget galt, det ser ud som om du ikke har ret til at købe evnen.1";
+                        }
+
+                        $xp->used = true;
+                        $xp->ability_character = 1;
+                        $xp->used_date = date("Y-m-d");
+                        $xp->save();
+                        $xps = $xps->slice(1);
+                    }
+                }
+                if($cost == 0)
+                {
+                    DB::commit();
+                    return;
+                }
+                else
+                {
+                    DB::rollBack();
+                    return  "Der er noget galt, det ser ud som om du ikke har ret til at købe evnen.2";
+                }
+                
+            }
+            else
+            {
+                return  "Der er noget galt, det ser ud som om du ikke har ret til at købe evnen.3";
+            }
+        }
+        catch (Exception $e)
+        {
+            DB::rollBack();
+            return  "Der er noget galt, det ser ud som om du ikke har ret til at købe evnen.4";
         }
     }
 }
