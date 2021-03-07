@@ -126,48 +126,27 @@ class HomeController extends Controller
 
     public function postAbility(Request $request, $id)
     {    
-        DB::beginTransaction();    
-        try{
-
-            $characterId = $id;
-            $ability = Ability::findOrFail($request->input('abilityId'));
+        
+        $ability = Ability::findOrFail($request->input('abilityId'));
             
-            $character = Character::findOrFail($characterId);
-            $cost = $ability->cost - $ability->rabat($character);
-            if($ability->canBeBougt($character))
-            {
-                $ability->characters()->attach($character);
+        $character = Character::findOrFail($id);
+        $xps = [];
+        $xps["Baby XP"] = $request->input(str_replace(' ', '_',"Baby XP"));
 
-                foreach($ability->xp_types as $xpTypes )
-                {
-                    $used = $request->input(str_replace(' ', '_',$xpTypes->xp_type));
-
-                    $cost -= $used;
-                    $xps = $character->getXpsNotUsedNotDeclined()->whereIn('xp_type', [$xpTypes->xp_type]);
-
-                    for($i = 0; $i < $used; $i++)
-                    {
-                        $xp = $xps->first();
-
-                        $xp->used = true;
-                        $xp->ability_character = 1;
-                        $xp->used_date = date("Y-m-d");
-                        $xp->save();
-                        $xps = $xps->slice(1);
-                    }
-                }
-                DB::commit();
-                return $this->getCharacter($id);
-            }
-            else
-            {
-                return $this->findAbility($characterId, "Der er noget galt, det ser ud som om du ikke har ret til at købe evnen.");
-            }
-        }
-        catch (Exception $e)
+        foreach($ability->xp_types as $xpTypes )
         {
-            DB::rollBack();
-            throw $e;
+            $xps[$xpTypes->xp_type] = $request->input(str_replace(' ', '_',$xpTypes->xp_type));
+        }
+
+        $result = $character->attachAbility($ability, $xps);
+            
+        if($result == null)
+        {
+            return $this->getCharacter($id);
+        }
+        else
+        {
+            return $this->findAbility($Id, $result);
         }
     }
 }
