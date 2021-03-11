@@ -71,15 +71,15 @@
 
                     <div class="card-body">
                         <div class="row">
-                        @foreach ($character->abilities as $ability)
+                        @foreach ($character->getAbilitesFiltered() as $key=>$ability)
                             <div class="col-md-6 card mb-3 ml-0 pt-2 pb-2">
                                 <div class="row">
                                     <div class="col-8">
-                                        <a href="/ability/{{$ability->id}}">{{$ability->name}}</a>
+                                        <a href="/ability/{{$key}}">{{$ability}}</a>
                                     </div>
 
                                     <div class="col-4 text-right">
-                                        {{$ability->pivot->created_at->format('Y-m-d')}}
+                                        {{$character->getAbilityDate($key)}}
                                     </div>
                                 </div>
                             </div>

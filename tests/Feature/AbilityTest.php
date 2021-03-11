@@ -32,8 +32,9 @@ class AbilityTest extends TestCase
         $character->attachXp("Kriger XP", "GM", "2020", "2");
         $character->attachXp("Kriger XP", "GM", "2020", "3");
         $character->attachXp("Kriger XP", "GM", "2020", "4");
+        $character->attachXp("Kriger XP", "GM", "2020", "5");
 
-        $this->assertEquals(4, $character->getXpsNotUsedNotDeclined()->count());
+        $this->assertEquals(5, $character->getXpsNotUsedNotDeclined()->count());
         $this->assertEquals(0, $character->abilities()->count());
 
         $ability = Ability::findOrFail(1);
@@ -42,7 +43,7 @@ class AbilityTest extends TestCase
         $this->assertEquals($result, null);
 
         $this->assertEquals(1, $character->abilities()->count());
-        $this->assertEquals(0, $character->getXpsNotUsedNotDeclined()->count());
+        $this->assertEquals(1, $character->getXpsNotUsedNotDeclined()->count());
     }
 
     public function testAttachAbilityBabyXp()
@@ -169,4 +170,24 @@ class AbilityTest extends TestCase
         $this->assertEquals(0, $character->abilities()->count());
         $this->assertEquals(3, $character->getXpsNotUsedNotDeclined()->count());
     }
+
+    public function testAbilityDate()
+    {
+        $this->seed();
+
+        $character = new Character();
+        $character->category = "Borger";
+        $character->name = "Test";
+        $character->race = "Test";
+        $character->religion = "Test";
+        $character->culture = "Test";
+        $character->start_time = "2020-01-01";
+        $character->user_id = 1;
+        $character->save();
+
+        $character->abilities()->attach(Ability::findOrFail(1));
+
+        $this->assertEquals(date("Y-m-d"), $character->getAbilityDate(1));
+    }
+
 }
