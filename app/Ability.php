@@ -34,6 +34,11 @@ class Ability extends Model
         return $this->belongsToMany('App\Character', 'ability_characters', 'ability_id', 'character_id')->withTimestamps();
     }
 
+    public function memberType()
+    {
+        return $this->belongsTo('App\MemberType');
+    }
+
     public function isRequirementsMeet(Character $character)
     {
         foreach($this->requerements as $req)
