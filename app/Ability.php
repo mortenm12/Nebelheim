@@ -11,7 +11,7 @@ class Ability extends Model
 
     public function requerements()
     {
-        return $this->belongsToMany('App\Ability', 'ability_abilities', 'ability_id', 'req_ability_id');
+        return $this->belongsToMany('App\Ability', 'ability_abilities', 'ability_id', 'req_ability_id')->withPivot('serie');
     }
 
     public function requered_in()
@@ -34,20 +34,77 @@ class Ability extends Model
         return $this->belongsToMany('App\Character', 'ability_characters', 'ability_id', 'character_id')->withTimestamps();
     }
 
-    public function memberType()
+    public function getSeries()
     {
-        return $this->belongsTo('App\MemberType');
+        $results = [];
+        foreach($this->requerements as $req)
+        {
+            $serie = $req->pivot->serie;
+            if(!in_array($serie, $results))
+            {
+                array_push($results, $serie);
+            }
+        }
+        sort($results);
+        return $results;
+    }
+
+    public function isNegativeRequirementsMeet(Character $character)
+    {
+        foreach($this->getSeries() as $serie)
+        {
+            if($serie < 0)
+            {
+                foreach($this->requirementsInSerie($serie) as $req)
+                {
+                    if($character->abilities->contains($req)){
+                        return false;
+                    }
+                
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    public function requirementsInSerie($serie){
+        $results = [];
+
+        foreach($this->requerements as $req)
+        {
+            if($req->pivot->serie == $serie)
+                array_push($results, $req);
+        }
+        return $results;
+    }
+
+    public function isPositiveRequirementsMeet(Character $character)
+    {
+        $isSeriesBiggerThanZero = false;
+        foreach($this->getSeries() as $serie)
+        {
+            if($serie > 0)
+            {
+                $isSeriesBiggerThanZero = true;
+
+                $result = true;
+                foreach($this->requirementsInSerie($serie) as $req)
+                {
+                    if(!$character->abilities->contains($req))
+                        $result = false;
+
+                }
+                if($result)
+                    return true;
+            }
+        }
+        return !$isSeriesBiggerThanZero;
     }
 
     public function isRequirementsMeet(Character $character)
     {
-        foreach($this->requerements as $req)
-        {
-            if(!$character->abilities->contains($req)){
-                return false;
-            }
-        }
-        return true;
+        return $this->isPositiveRequirementsMeet($character) && $this->isNegativeRequirementsMeet($character);
     }
 
     public function alreadyBought(Character $character)
