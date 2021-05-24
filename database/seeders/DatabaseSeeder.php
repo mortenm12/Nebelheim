@@ -16,8 +16,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             XpTypeSeeder::class,
             CategorySeeder::class,
-            MemberTypeSeeder::class,
-            MemberSeeder::class,
             AbilitySeeder::class,
             AbilityCategorySeeder::class,
             AbilityXpTypeSeeder::class,

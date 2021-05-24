@@ -29,6 +29,17 @@ class AbilitySeeder extends Seeder
             ['id' => 12, 'name' => 'Nævekamp 9', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 4, 'equipment' => ''],
             ['id' => 13, 'name' => 'Nævekamp 10', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 4, 'equipment' => ''],
 
+            ['id' => 14, 'name' => 'Troldmand Niveau 1 Ildens Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 4, 'equipment' => ''],
+            ['id' => 15, 'name' => 'Troldmand Niveau 2 Ildens Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 11, 'equipment' => ''],
+            ['id' => 16, 'name' => 'Troldmand Niveau 3 Ildens Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 13, 'equipment' => ''],
+            ['id' => 17, 'name' => 'Troldmand Niveau 4 Ildens Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 16, 'equipment' => ''],
+            ['id' => 18, 'name' => 'Dhar', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 5, 'equipment' => ''],
+            ['id' => 19, 'name' => 'Troldmand Niveau 1 Den Grå Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 4, 'equipment' => ''],
+            ['id' => 20, 'name' => 'Troldmand Niveau 2 Den Grå Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 11, 'equipment' => ''],
+            ['id' => 21, 'name' => 'Troldmand Niveau 3 Den Grå Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 13, 'equipment' => ''],
+            ['id' => 22, 'name' => 'Troldmand Niveau 4 Den Grå Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 16, 'equipment' => ''],
+            
+            ['id' => 23, 'name' => 'Læse og Skrive', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 3, 'equipment' => ''],
 
 
             //['id' => , 'name' => '', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => , 'equipment' => ''],

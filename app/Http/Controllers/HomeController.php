@@ -115,7 +115,7 @@ class HomeController extends Controller
         $result = $character->attachXp($xpType, $teacher, $year, $month);
         if($result == null)
         {
-            return $this->getCharacter($id);
+            return redirect("/character/".$id);
         }
         else
         {
@@ -142,7 +142,7 @@ class HomeController extends Controller
             
         if($result == null)
         {
-            return $this->getCharacter($id);
+            return redirect("/character/".$id);
         }
         else
         {

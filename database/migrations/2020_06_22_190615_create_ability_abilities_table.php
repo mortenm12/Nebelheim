@@ -16,6 +16,7 @@ class CreateAbilityAbilitiesTable extends Migration
         Schema::create('ability_abilities', function (Blueprint $table) {
             $table->integer('ability_id');
             $table->integer('req_ability_id');
+            $table->integer('serie');
 
             $table->primary(['ability_id', 'req_ability_id']);
         });
