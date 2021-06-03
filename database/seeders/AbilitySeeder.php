@@ -40,7 +40,8 @@ class AbilitySeeder extends Seeder
             ['id' => 22, 'name' => 'Troldmand Niveau 4 Den Grå Orden', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 16, 'equipment' => ''],
             
             ['id' => 23, 'name' => 'Læse og Skrive', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 3, 'equipment' => ''],
-
+            ['id' => 24, 'name' => 'Bonk', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 3, 'equipment' => ''],
+            ['id' => 25, 'name' => 'SV. Bue', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => 3, 'equipment' => ''],
 
             //['id' => , 'name' => '', 'descr_short' => '', 'descr_long' => '', 'descr_without' => '', 'cost' => , 'equipment' => ''],
         ];

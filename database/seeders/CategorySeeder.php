@@ -15,10 +15,10 @@ class CategorySeeder extends Seeder
     {
         //
         $categories = [
-            ['category' => 'Borger', 'start_ability_id' => null],
-            ['category' => 'Jæger', 'start_ability_id' => null],
-            ['category' => 'Lyssky', 'start_ability_id' => null],
-            ['category' => 'Akedemiker', 'start_ability_id' => null],
+            ['category' => 'Borger', 'start_ability_id' => 23],
+            ['category' => 'Jæger', 'start_ability_id' => 25],
+            ['category' => 'Lyssky', 'start_ability_id' => 24],
+            ['category' => 'Akedemiker', 'start_ability_id' => 23],
             ['category' => 'Kriger', 'start_ability_id' => 1],
 
         ];

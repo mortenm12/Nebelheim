@@ -43,4 +43,21 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Character');
     }
+
+    public function attachCharacter(Category $category, $name, $race, $religion, $cultur)
+    {
+        $character = new Character();
+        $character->category = $category->category;
+        $character->name = $name;
+        $character->race = $race;
+        $character->religion = $religion;
+        $character->culture = $cultur;
+        $character->start_time = date('Y-m-d');
+        $character->user_id = $this->id;
+        $character->save();
+        $ability = Ability::findOrFail($category->start_ability_id);
+        $ability->characters()->attach($character);
+
+        return $character;
+    }
 }
