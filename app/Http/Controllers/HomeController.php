@@ -56,16 +56,15 @@ class HomeController extends Controller
 
     public function postCharacter(Request $request)
     {
-        $character = new Character();
-        $character->category = $request->input('category');
-        $character->name = $request->input('name');
-        $character->race = $request->input('race');
-        $character->religion = $request->input('religion');
-        $character->culture = $request->input('culture');
-        $character->start_time = date('Y-m-d');
-        $character->user_id = Auth::user()->id;
-        $character->save();
-        return $this->index();
+        $category = Category::findOrFail($request->input('category'));
+        $name = $request->input('name');
+        $race = $request->input('race');
+        $religion = $request->input('religion');
+        $culture = $request->input('culture');
+
+        $character = Auth::user()->attachCharacter($category, $name, $race, $religion, $culture);
+
+        return redirect("/character/".$character->id);
     }
 
     public function findAbility($id, $error='')
