@@ -156,6 +156,12 @@ class Character extends Model
                 if($ability->canBeBougt($this))
                 {
                     $ability->characters()->attach($this);
+
+                    foreach($ability->talents as $talent)
+                    {
+                        $talent->characters()->attach($this);
+                    }
+
                     $types = $ability->xp_types->transform(function($item, $key){
                         return $item->xp_type;
                     });

@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             CharacterSeeder::class,
             XpSeeder::class,
             AbilityCharacterSeeder::class,
+            RabatAbilityAbilities::class,
+            TalentAbilityAbilities::class,
          ]);
     }
 }
