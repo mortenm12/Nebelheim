@@ -19,6 +19,26 @@ class Ability extends Model
         return $this->belongsToMany('App\Ability', 'ability_abilities', 'req_ability_id', 'ability_id');
     }
 
+    public function talents()
+    {
+        return $this->belongsToMany('App\Ability', 'talent_ability_abilities', 'ability_id', 'talent_ability_id');
+    }
+
+    public function talent_in()
+    {
+        return $this->belongsToMany('App\Ability', 'talent_ability_abilities', 'talent_ability_id', 'ability_id');
+    }
+
+    public function discount()
+    {
+        return $this->belongsToMany('App\Ability', 'rabat_ability_abilities', 'ability_id', 'rabat_ability_id')->withPivot('rabat');
+    }
+
+    public function rabat_in()
+    {
+        return $this->belongsToMany('App\Ability', 'rabat_ability_abilities', 'rabat_ability_id', 'ability_id');
+    }
+
     public function favorit_category()
     {
         return $this->belongsToMany('App\Category', 'ability_categories', 'ability_id', 'category');
@@ -130,13 +150,22 @@ class Ability extends Model
     {
         $favoritAbility = 0;
         $niceCloth = 1;
+        $abilityRabat = 0;
 
         if($this->favorit_category->contains($character->category))
         {
             $favoritAbility = 2;
         }
 
-        return $niceCloth + $favoritAbility;
+        foreach($this->discount as $rabat_ability)
+        {
+            if($character->abilities->contains($rabat_ability))
+            {
+                $abilityRabat += $rabat_ability->pivot->rabat;
+            }
+        }
+
+        return $niceCloth + $favoritAbility + $abilityRabat;
     }
 
     public function canBeBougt(Character $character, $extraXp = 0)
