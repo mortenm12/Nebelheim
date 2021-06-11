@@ -159,7 +159,15 @@ class Character extends Model
 
                     foreach($ability->talents as $talent)
                     {
-                        $talent->characters()->attach($this);
+                        if(!$this->abilities->contains($talent))
+                        {
+                            $talent->characters()->attach($this);
+                        }
+                        else
+                        {
+                            //tjek om det er evne med nr, om om den næste i rækken kan tages
+                        }
+                        
                     }
 
                     $types = $ability->xp_types->transform(function($item, $key){

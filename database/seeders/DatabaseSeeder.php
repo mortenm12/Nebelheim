@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
             RabatAbilityAbilities::class,
             TalentAbilityAbilities::class,
          ]);
+        $this->call(AbilitiesTableSeeder::class);
     }
 }
